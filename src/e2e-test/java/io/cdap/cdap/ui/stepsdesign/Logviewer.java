@@ -32,6 +32,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Logviewer {
@@ -42,7 +43,8 @@ public class Logviewer {
   }
 
   @When("Deploy and test pipeline {string} with timestamp with pipeline JSON file {string}")
-  public void deployAndTestPipeline(String pipelineName, String pipelineJSONfile) {
+  public void deployAndTestPipeline(String pipelineName, String pipelineJSONfile) throws IOException,
+    InterruptedException {
     Helper.deployAndTestPipeline(pipelineJSONfile, pipelineName + System.currentTimeMillis());
   }
 

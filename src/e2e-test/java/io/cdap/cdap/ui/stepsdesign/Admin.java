@@ -32,7 +32,7 @@ public class Admin {
     ElementHelper.clickOnElement(Helper.locateElementByTestId("system-prefs-accordion"));
   }
 
-  @Then("Click on \"Edit System Preferences\" button")
+  @Then("click on \"Edit System Preferences\" button")
   public void editSystemPreferences() {
     ElementHelper.clickOnElement(Helper.locateElementByTestId("edit-system-prefs-btn"));
   }
@@ -55,7 +55,7 @@ public class Admin {
     ElementHelper.sendKeys(valueInput, value);
   }
 
-  @Then("Click on \"Save Preferences\" button")
+  @Then("click on \"Save Preferences\" button")
   public void saveSystemPreferences() {
     ElementHelper.clickOnElement(Helper.locateElementByTestId("save-prefs-btn"));
   }

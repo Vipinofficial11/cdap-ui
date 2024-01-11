@@ -34,16 +34,19 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WindowType;
 
+import java.io.IOException;
+
 public class CommonSteps {
 
   @When("Open CDAP main page")
-  public void openCdap() {
+  public void openCdap() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.CDAP_URL);
     WaitHelper.waitForPageToLoad();
   }
 
   @When("Open Pipeline Studio Page")
-  public void openPipelineStudioPage() {
+  public void openPipelineStudioPage() throws IOException, InterruptedException {
     try {
       tryOpenStudioPage();
     } catch (UnhandledAlertException e) {
@@ -59,7 +62,8 @@ public class CommonSteps {
     Helper.waitSeconds(4);
   }
 
-  private static void tryOpenStudioPage() {
+  private static void tryOpenStudioPage() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.PIPELINE_STUDIO_URL);
     WaitHelper.waitForPageToLoad();
     Helper.setNewSchemaEditor(false);
@@ -71,25 +75,29 @@ public class CommonSteps {
   }
 
   @When("Open Connections Page")
-  public static void openConnectionsPage() {
+  public static void openConnectionsPage() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.BASE_STUDIO_URL + "connections");
     WaitHelper.waitForPageToLoad();
   }
 
   @When("Open Configuration Page")
-  public void openConfigurationPage() {
+  public void openConfigurationPage() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.CONFIGURATION_URL);
     WaitHelper.waitForPageToLoad();
   }
 
   @When("Open Source Control Management Page")
-  public void openSourceControlManagementPage() {
+  public void openSourceControlManagementPage() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.SOURCE_CONTROL_MANAGEMENT_URL);
     WaitHelper.waitForPageToLoad();
   }
 
   @When("Open Source Control Sync Page")
-  public void openRemotePipelinesPage() {
+  public void openRemotePipelinesPage() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.SOURCE_CONTROL_SYNC_URL);
     WaitHelper.waitForPageToLoad();
   }
@@ -248,19 +256,22 @@ public class CommonSteps {
   }
 
   @When("Open pipeline list page")
-  public void openPipelineList() {
+  public void openPipelineList() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.PIPELINE_LIST_URL);
     WaitHelper.waitForPageToLoad();
   }
 
   @When("Open pipeline draft list page")
-  public void openPipelineDraftList() {
+  public void openPipelineDraftList() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.PIPELINE_DRAFTS_URL);
     WaitHelper.waitForPageToLoad();
   }
 
   @Then("Open pipeline configure")
-  public void openPipelineConfigure() {
+  public void openPipelineConfigure() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     ElementHelper.clickOnElement(Helper.locateElementByTestId("pipeline-configure-btn"));
   }
 

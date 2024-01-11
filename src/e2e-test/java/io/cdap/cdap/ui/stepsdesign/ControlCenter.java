@@ -24,15 +24,18 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebElement;
 
+import java.io.IOException;
+
 public class ControlCenter {
 
     @When("Deploy and test pipeline {string} with pipeline JSON file {string}")
-    public void deployAndTestPipeline(String pipelineName, String pipelineJSONfile) {
+    public void deployAndTestPipeline(String pipelineName, String pipelineJSONfile) throws IOException,
+      InterruptedException {
         Helper.deployAndTestPipeline(pipelineJSONfile, pipelineName);
     }
 
     @When("Open control center page")
-    public void openControlCenterPage() {
+    public void openControlCenterPage() throws IOException, InterruptedException {
         SeleniumDriver.openPage(Constants.BASE_STUDIO_URL + "control");
         WaitHelper.waitForPageToLoad();
     }

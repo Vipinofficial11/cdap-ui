@@ -35,13 +35,13 @@ Feature: Namespaces - Validate Namespace functionalities
   Scenario: Create namespace should fail for the name default and should succeed otherwise, and clicking on the new namespace row should open the namespace details page
     When Open Configuration Page
     Then Click on "Namespaces" accordion
-    Then Click on "Create New Namespace" button
+    Then click on "Create New Namespace" button
     Then Enter "default" as Namespace name
-    Then Click on "Finish" button
+    Then click on "Finish" button
     Then Verify that the namespace creation failed
     Then Enter "NewNamespace1" as Namespace name
     Then Enter "New Namespace1 created for testing" as Namespace description
-    Then Click on "Finish" button
+    Then click on "Finish" button
     Then Verify that the Namespace creation is successful for namespace "NewNamespace1"
     Then Close the Create Namespace wizard
     Then Verify that the count of namespaces is 2

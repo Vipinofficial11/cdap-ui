@@ -53,7 +53,7 @@ public class Namespaces {
         Assert.fail(String.format("Namespace with the name '%s' not found.", name));
     }
 
-    @Then("Click on \"Create New Namespace\" button")
+    @Then("click on \"Create New Namespace\" button")
     public void createNewNamespace() {
         ElementHelper.clickOnElement(Helper.locateElementByTestId("create-namespace-btn"));
     }
@@ -101,7 +101,7 @@ public class Namespaces {
         Assert.assertEquals("Namespace details does not match", actualDetails, expectedDetails);
     }
 
-    @Then("Click on \"Finish\" button")
+    @Then("click on \"Finish\" button")
     public void clickOnFinishCreateNamespace() {
         String wizardFinishButtonXPath = "//button[contains(@data-cy, 'wizard-finish-btn')]";
         ElementHelper.clickOnElement(Helper.locateElementByXPath(wizardFinishButtonXPath));

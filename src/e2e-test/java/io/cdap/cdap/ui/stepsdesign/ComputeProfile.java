@@ -33,13 +33,15 @@ import java.io.IOException;
 public class ComputeProfile {
 
   @When("Open system profiles create page")
-  public void openSystemProfilesCreate() {
+  public void openSystemProfilesCreate() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.SYSTEM_PROFILES_CREATE_URL);
     WaitHelper.waitForPageToLoad();
   }
 
   @When("Open default profiles create page")
-  public void openDefaultProfilesCreate() {
+  public void openDefaultProfilesCreate() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.BASE_STUDIO_URL + "profiles/create");
     WaitHelper.waitForPageToLoad();
   }
@@ -90,7 +92,7 @@ public class ComputeProfile {
     ElementHelper.sendKeys(accountKeyInput, accountKeyValue);
   }
 
-  @Then("Click on \"Create\" button")
+  @Then("click on \"Create\" button")
   public void createProfile() {
     ElementHelper.clickOnElement(
       Helper.locateElementByTestId("profile-create-btn")

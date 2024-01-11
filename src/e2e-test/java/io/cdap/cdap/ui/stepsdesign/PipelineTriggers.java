@@ -25,6 +25,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.IOException;
+
 
 public class PipelineTriggers {
   public static String simpleTriggerName = "simple_trigger_test";
@@ -32,7 +34,8 @@ public class PipelineTriggers {
   public static String crossArgMappingTriggerName = "complex_cross_arg_mapping_trigger_test";
 
   @Then("Deploy pipeline {string} with pipeline JSON file {string}")
-  public void deployPipelineFromJson(String pipelineName, String pipelineJSONfile) {
+  public void deployPipelineFromJson(String pipelineName, String pipelineJSONfile) throws IOException,
+    InterruptedException {
     Helper.deployAndTestPipeline(pipelineJSONfile, pipelineName);
   }
 

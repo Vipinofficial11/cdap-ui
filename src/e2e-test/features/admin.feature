@@ -14,17 +14,17 @@
 # the License.
 #
 
-@Integration_Tests
+@Integration_Tests @DEBUG
 Feature: Admin - Validate profile setting
 
   @ADMIN_TEST
   Scenario: Show error message if user tries to set profile at the instance level
     When Open Configuration Page
     Then Click on "System Preferences" accordion
-    Then Click on "Edit System Preferences" button
+    Then click on "Edit System Preferences" button
     Then Add "system.profile.name" as key
     Then Add "hello" as value
-    Then Click on "Save Preferences" button
+    Then click on "Save Preferences" button
     Then Verify failure in saving changes
 
 
@@ -32,8 +32,8 @@ Feature: Admin - Validate profile setting
   Scenario: Allow user to save valid preference at instance level after fixing error
     When Open Configuration Page
     Then Click on "System Preferences" accordion
-    Then Click on "Edit System Preferences" button
+    Then click on "Edit System Preferences" button
     Then Add "name" as key
     Then Add "hello" as value
-    Then Click on "Save Preferences" button
+    Then click on "Save Preferences" button
     Then Verify successful saving of preferences with "name" as key and "hello" as value

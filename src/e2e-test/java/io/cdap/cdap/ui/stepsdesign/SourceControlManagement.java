@@ -35,7 +35,7 @@ import org.openqa.selenium.WebElement;
 public class SourceControlManagement {
   private static final int ALERT_DISPLAY_TIMEOUT = 7;
 
-  @Then("Click on \"Link Repository\" button")
+  @Then("click on \"Link Repository\" button")
   public void openAddRepositoryButton() {
     ElementHelper.clickOnElement(Helper.locateElementByTestId("link-repository-button"));
   }
@@ -70,7 +70,7 @@ public class SourceControlManagement {
     ElementHelper.sendKeys(input, branch);
   }
 
-  @Then("Click on \"Validate\" button")
+  @Then("click on \"Validate\" button")
   public void clickOnValidateButton() {
     ElementHelper.clickOnElement(Helper.locateElementByTestId("validate-repo-config-button"));
   }
@@ -82,7 +82,7 @@ public class SourceControlManagement {
     ElementHelper.clickOnElement(Helper.locateElementByTestId("alert-close"));
   }
 
-  @Then("Click on \"Save and Close\" button")
+  @Then("click on \"Save and Close\" button")
   public void clickOnSaveButton() {
     ElementHelper.clickOnElement(Helper.locateElementByTestId("save-repo-config-button"));
   }

@@ -16,6 +16,8 @@
 
 package io.cdap.cdap.ui.utils;
 
+import io.cdap.e2e.utils.PluginPropertyUtils;
+
 public class Constants {
   private static double getRandomArbitrary(int min, int max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -27,7 +29,7 @@ public class Constants {
     String.valueOf(TEST_TIMEOUT_TIME / 1000) +
     "seconds";
 
-  public static final String BASE_URL = "http://localhost:11011";
+  public static final String BASE_URL = PluginPropertyUtils.pluginProp("baseUrl");
   public static final String BASE_SERVER_URL = "http://localhost:11015";
   public static final String BASE_PIPELINES_URL = BASE_URL + "/pipelines/ns/default";
   public static final String CDAP_URL = BASE_URL + "/cdap";

@@ -17,7 +17,7 @@
 @Integration_Tests
 Feature: Compute profile - creation
 
-  @COMPUTE_PROFILE_TEST
+  @COMPUTE_PROFILE_TEST @DEBUG
   Scenario: Create system compute profile
     When Open system profiles create page
     Then Click on "Dataproc" from the listed provisioners
@@ -27,11 +27,11 @@ Feature: Compute profile - creation
     Then Add "system profile for integration test" as Description
     Then Add "test" as Project Id
     Then Add "test" as Account Key
-    Then Click on "Create" button
+    Then click on "Create" button
     Then Verify the profile "test-system-compute" should present in the list
     Then Delete system profile "test-system-compute" as cleanup action
 
-  @COMPUTE_PROFILE_TEST
+  @COMPUTE_PROFILE_TEST @DEBUG
   Scenario: Create namespace compute profile
     When Open default profiles create page
     Then Click on "Dataproc" from the listed provisioners
@@ -41,6 +41,6 @@ Feature: Compute profile - creation
     Then Add "namespace profile for integration test" as Description
     Then Add "test" as Project Id
     Then Add "test" as Account Key
-    Then Click on "Create" button
+    Then click on "Create" button
     Then Verify the profile "test-namespace-compute" should present in the list
     Then Delete namespace profile "test-namespace-compute" as cleanup action

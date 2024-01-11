@@ -19,7 +19,9 @@ package io.cdap.cdap.ui.stepsdesign;
 import com.google.common.base.Strings;
 import io.cdap.cdap.ui.utils.Constants;
 import io.cdap.cdap.ui.utils.Helper;
+import io.cdap.e2e.utils.ConstantsUtil;
 import io.cdap.e2e.utils.PluginPropertyUtils;
+import io.cdap.e2e.utils.SeleniumHelper;
 import io.cucumber.java.Before;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -34,7 +36,9 @@ public class BeforeActions {
   @Before(order = 0)
   public void loginIfRequired() throws IOException {
     logger.info("-----------------Logging in if required------------------");
-    Helper.loginIfRequired();
+    if (!Boolean.parseBoolean(SeleniumHelper.readParameters(ConstantsUtil.TESTONCDF))) {
+      Helper.loginIfRequired();
+    }
   }
 
   @Before(order = 1, value = "@SOURCE_CONTROL_MANAGEMENT_TEST")

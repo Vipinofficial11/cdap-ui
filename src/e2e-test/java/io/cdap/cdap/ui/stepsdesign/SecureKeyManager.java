@@ -28,6 +28,7 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +43,8 @@ public class SecureKeyManager {
   }};
 
   @When("Visit Secure keys page")
-  public void visitSecureKeysPage() {
+  public void visitSecureKeysPage() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.SECURE_KEY_MANAGER_URL);
     WaitHelper.waitForPageToLoad();
   }

@@ -27,10 +27,14 @@ import io.cdap.cdap.common.utils.DirUtils;
 import io.cdap.cdap.ui.types.NodeInfo;
 import io.cdap.common.http.HttpMethod;
 import io.cdap.common.http.HttpResponse;
+import io.cdap.e2e.pages.actions.CdfSignInActions;
 import io.cdap.e2e.utils.CdfHelper;
+import io.cdap.e2e.utils.ConstantsUtil;
 import io.cdap.e2e.utils.ElementHelper;
+import io.cdap.e2e.utils.PageHelper;
 import io.cdap.e2e.utils.PluginPropertyUtils;
 import io.cdap.e2e.utils.SeleniumDriver;
+import io.cdap.e2e.utils.SeleniumHelper;
 import io.cdap.e2e.utils.WaitHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.NameValuePair;
@@ -111,6 +115,21 @@ public class Helper implements CdfHelper {
       } catch (IOException e) {
         throw new IOException(e.getMessage());
       }
+    }
+  }
+
+  public static void loginInCdf() throws IOException, InterruptedException {
+    SeleniumDriver.openPage(Constants.BASE_URL + "/pipelines/ns/default/studio");
+    if (!CdfSignInActions.isUserLoggedInCDF()) {
+      CdfSignInActions.login();
+      PageHelper.acceptAlertIfPresent();
+      WaitHelper.waitForPageToLoad();
+    }
+  }
+
+  public static void loginInCdfIfRequired() throws IOException, InterruptedException {
+    if (Boolean.parseBoolean(SeleniumHelper.readParameters(ConstantsUtil.TESTONCDF))) {
+      loginInCdf();
     }
   }
 
@@ -230,7 +249,9 @@ public class Helper implements CdfHelper {
     }
   }
 
-  public static void deployAndTestPipeline(String filename, String pipelineName) {
+  public static void deployAndTestPipeline(String filename, String pipelineName) throws IOException,
+    InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.BASE_STUDIO_URL + "pipelines");
     WaitHelper.waitForPageToLoad();
 

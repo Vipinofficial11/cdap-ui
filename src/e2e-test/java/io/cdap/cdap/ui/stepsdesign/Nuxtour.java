@@ -47,7 +47,8 @@ public class Nuxtour {
 
 
   @When("Open CDAP welcome page")
-  public void openCdap() {
+  public void openCdap() throws IOException, InterruptedException {
+    Helper.loginInCdfIfRequired();
     SeleniumDriver.openPage(Constants.CDAP_URL);
     Helper.setShowWelcomeSessionStorage();
     WaitHelper.waitForPageToLoad();
