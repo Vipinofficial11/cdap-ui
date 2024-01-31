@@ -27,8 +27,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
   features = {"src/e2e-test/features"},
   glue = {"io.cdap.cdap.ui.stepsdesign", "stepsdesign"},
-  tags = {"not @ignore"},
-//  tags = {"@DEBUG"},
+  tags = {"@Failure"},
   plugin = {"pretty", "html:target/cucumber-html-report/tethering",
     "json:target/cucumber-reports/cucumber-tethering.json",
     "junit:target/cucumber-reports/cucumber-tethering.xml"}

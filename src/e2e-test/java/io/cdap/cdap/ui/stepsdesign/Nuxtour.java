@@ -22,6 +22,7 @@ import io.cdap.cdap.ui.utils.HttpRequestHandler;
 import io.cdap.common.http.HttpMethod;
 import io.cdap.common.http.HttpResponse;
 import io.cdap.e2e.utils.ElementHelper;
+import io.cdap.e2e.utils.PluginPropertyUtils;
 import io.cdap.e2e.utils.SeleniumDriver;
 import io.cdap.e2e.utils.WaitHelper;
 import io.cucumber.java.After;
@@ -30,6 +31,8 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Nuxtour {
   private static final String NUXTOUR_MODAL_XPATH =
@@ -115,12 +118,20 @@ public class Nuxtour {
 
   @After
   public void resetNuxtourSettings() {
+    Map<String, String> reqHeaders = new HashMap<String, String>();
+    boolean testOnCDF  = Boolean.parseBoolean(PluginPropertyUtils.pluginProp("testOnCDF"));
+
+    if (testOnCDF) {
+      String accessToken = "Bearer " + PluginPropertyUtils.pluginProp("cdf-access-token");
+      reqHeaders.put("Authorization", accessToken);
+      reqHeaders.put("Content-length", "0");
+    }
     try {
       HttpResponse response = HttpRequestHandler.makeHttpRequest(HttpMethod.PUT,
-                                                                 Constants.BASE_SERVER_URL + "/v3/configuration/user",
-                                                                 null,
-                                                                 null,
-                                                                 null);
+              Constants.BASE_SERVER_URL + "/v3/configuration/user",
+              testOnCDF ? reqHeaders : null,
+              testOnCDF ? "" : null,
+              null);
     } catch (IOException e) {
       e.printStackTrace();
     }

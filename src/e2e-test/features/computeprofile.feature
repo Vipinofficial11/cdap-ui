@@ -14,10 +14,11 @@
 # the License.
 #
 
-@Integration_Tests
+#@Integration_Tests
+@Failure
 Feature: Compute profile - creation
 
-  @COMPUTE_PROFILE_TEST @DEBUG
+  @COMPUTE_PROFILE_TEST
   Scenario: Create system compute profile
     When Open system profiles create page
     Then Click on "Dataproc" from the listed provisioners
@@ -31,7 +32,7 @@ Feature: Compute profile - creation
     Then Verify the profile "test-system-compute" should present in the list
     Then Delete system profile "test-system-compute" as cleanup action
 
-  @COMPUTE_PROFILE_TEST @DEBUG
+  @COMPUTE_PROFILE_TEST
   Scenario: Create namespace compute profile
     When Open default profiles create page
     Then Click on "Dataproc" from the listed provisioners

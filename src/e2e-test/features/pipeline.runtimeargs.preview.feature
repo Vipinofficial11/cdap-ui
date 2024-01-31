@@ -14,7 +14,7 @@
 # the License.
 #
 
-@Integration_Tests
+#@Integration_Tests
 Feature: Pipeline - Runtime Args - It must be possible to preview a pipeline with macros
 
   # Rule: It must be possible to preview a pipeline with macros

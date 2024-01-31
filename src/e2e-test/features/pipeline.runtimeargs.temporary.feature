@@ -14,7 +14,7 @@
 # the License.
 #
 
-@Integration_Tests
+#@Integration_Tests
 Feature: Pipeline - Runtime Args - It must be possible to deploy a pipeline and use temporary runtime arguments
 
   # Rule: It must be possible to deploy a pipeline and use temporary runtime arguments

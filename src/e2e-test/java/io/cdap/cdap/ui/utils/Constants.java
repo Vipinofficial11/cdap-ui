@@ -30,7 +30,7 @@ public class Constants {
     "seconds";
 
   public static final String BASE_URL = PluginPropertyUtils.pluginProp("baseUrl");
-  public static final String BASE_SERVER_URL = "http://localhost:11015";
+  public static final String BASE_SERVER_URL = PluginPropertyUtils.pluginProp("baseServerUrl");
   public static final String BASE_PIPELINES_URL = BASE_URL + "/pipelines/ns/default";
   public static final String CDAP_URL = BASE_URL + "/cdap";
   public static final String CONFIGURATION_URL = BASE_URL + "/cdap/administration/configuration";

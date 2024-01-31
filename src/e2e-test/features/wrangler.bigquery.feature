@@ -17,7 +17,7 @@
 @Integration_Tests
 Feature: Wrangler BigQuery Connection Tests
 
-  @WRANGLER_BIGQUERY_CONNECTION_TEST
+  @WRANGLER_BIGQUERY_CONNECTION_TEST @DEBUG
   Scenario: Should successfully test BIGQUERY connection
     When Open Connections Page
     Then Test BigQuery connection with name "bigquery_randomtest1234"

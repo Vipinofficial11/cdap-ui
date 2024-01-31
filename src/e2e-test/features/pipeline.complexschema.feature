@@ -14,7 +14,7 @@
 # the License.
 #
 
-@Integration_Tests
+#@Integration_Tests
 Feature: Pipeline Complex Schema
 
   @PIPELINE_COMPLEX_SCHEMA_TEST

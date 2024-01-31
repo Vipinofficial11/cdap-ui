@@ -185,7 +185,7 @@ public class CommonSteps {
     ElementHelper.clickOnElement(Helper.locateElementByTestId("close-config-popover"));
   }
 
-  @Then("Click on \"Get Schema\" button")
+  @Then("click on \"Get Schema\" button")
   public void getSchema() {
     CdfPluginPropertiesActions.clickGetSchemaButton();
   }

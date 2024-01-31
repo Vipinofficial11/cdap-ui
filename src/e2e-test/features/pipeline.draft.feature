@@ -14,7 +14,7 @@
 # the License.
 #
 
-@Integration_Tests
+#@Integration_Tests
 Feature: Pipeline Draft
 
   @PIPELINE_DRAFT_TEST

@@ -14,7 +14,7 @@
 # the License.
 #
 
-@Integration_Tests
+
 Feature: Navbar - Validate navbar functionalities
 
   @NAVBAR_TEST
@@ -33,14 +33,14 @@ Feature: Navbar - Validate navbar functionalities
     Then Check right features are enabled in "light" theme
     Given Set "default" theme
 
-  @NAVBAR_TEST
+  @NAVBAR_TEST @Integration_Tests
   Scenario: Verify menu closes when hub is opened
     When Open CDAP main page
     Then Click on hamburger menu
     Then Click on Hub
     Then Check drawer invisible
 
-  @NAVBAR_TEST
+  @NAVBAR_TEST @Integration_Tests
   Scenario: Verify menu drawer has correct feature highlight
     When Open CDAP main page
     Then Click and check "Control Center" font and highlight color

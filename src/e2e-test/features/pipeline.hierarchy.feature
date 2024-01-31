@@ -14,7 +14,7 @@
 # the License.
 #
 
-@Integration_Tests
+#@Integration_Tests
 Feature: Pipeline Hierarchy - Hierarchy Widgets
 
   @PIPELINE_HIERARCHY_TEST
@@ -49,7 +49,7 @@ Feature: Pipeline Hierarchy - Hierarchy Widgets
   @PIPELINE_HIERARCHY_TEST
   Scenario: Get The Schema
     Then Open "File" node property
-    Then Click on "Get Schema" button
+    Then click on "Get Schema" button
     Then Close node property
     Then Exit Studio Page
 

@@ -14,7 +14,7 @@
 # the License.
 #
 
-@Integration_Tests @DEBUG
+@Integration_Tests @Failure
 Feature: Admin - Validate profile setting
 
   @ADMIN_TEST

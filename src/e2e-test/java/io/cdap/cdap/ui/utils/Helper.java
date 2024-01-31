@@ -63,8 +63,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -289,15 +291,24 @@ public class Helper implements CdfHelper {
   }
 
   public static void cleanupPipelines(String pipelineName) {
+    Map<String, String> reqHeaders = new HashMap<String, String>();
+    boolean testOnCDF  = Boolean.parseBoolean(PluginPropertyUtils.pluginProp("testOnCDF"));
+
+    if (testOnCDF) {
+      String command = "gcloud auth print-access-token";
+      String token = Helper.createCdfAccessToken(command);
+      String accessToken = "Bearer " + token;
+      reqHeaders.put("Authorization", accessToken);
+    }
     try {
       HttpResponse response = HttpRequestHandler
         .makeHttpRequest(HttpMethod.GET,
                          Constants.BASE_SERVER_URL + "/v3/namespaces/default/apps/" + pipelineName,
-                         null, null, null);
+                testOnCDF ? reqHeaders : null, null, null);
       if (response.getResponseCode() == 200) {
         HttpRequestHandler.makeHttpRequest(HttpMethod.DELETE,
                                            Constants.BASE_SERVER_URL + "/v3/namespaces/default/apps/" + pipelineName,
-                                           null, null, null);
+                testOnCDF ? reqHeaders : null, null, null);
       }
     } catch (IOException e) {
       throw new RuntimeException(e.getMessage());
@@ -328,6 +339,15 @@ public class Helper implements CdfHelper {
     Map<String, String> reqBody = new HashMap<String, String>();
     reqBody.put("uiThemePath", themePath);
     String jsonBody = GSON.toJson(reqBody);
+    boolean testOnCDF  = Boolean.parseBoolean(PluginPropertyUtils.pluginProp("testOnCDF"));
+
+    if (testOnCDF) {
+      String command = "gcloud auth print-access-token";
+      String token = Helper.createCdfAccessToken(command);
+      String accessToken = "Bearer " + token;
+      reqHeaders.put("Authorization", accessToken);
+      reqHeaders.put("Content-length", "0");
+    }
     try {
       reqHeaders.put("Session-Token", getSessionToken());
       HttpResponse response = HttpRequestHandler.makeHttpRequest(HttpMethod.POST,
@@ -574,4 +594,28 @@ public class Helper implements CdfHelper {
         .setCredentialsProvider(creds)
         .call();
   }
+
+  public static String createCdfAccessToken(String command) {
+    try {
+      Process process = new ProcessBuilder(command.split("\\s+")).redirectErrorStream(true).start();
+      StringBuilder accessToken = new StringBuilder();
+      int processExitCode = process.waitFor();
+
+      try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+          accessToken.append(line).append("\n");
+        }
+      }
+      if (processExitCode == 0) {
+        return accessToken.toString().trim();
+      } else {
+        System.err.println("Error executing command. Exit code: " + processExitCode);
+      }
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 }
+

@@ -19,12 +19,14 @@ package io.cdap.cdap.ui.utils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import cucumber.api.Plugin;
 import io.cdap.cdap.ui.types.NodeInfo;
 import io.cdap.common.http.HttpMethod;
 import io.cdap.common.http.HttpResponse;
 import io.cdap.e2e.pages.locators.CdfStudioLocators;
 import io.cdap.e2e.utils.CdfHelper;
 import io.cdap.e2e.utils.ElementHelper;
+import io.cdap.e2e.utils.PluginPropertyUtils;
 import io.cdap.e2e.utils.SeleniumDriver;
 import io.cdap.e2e.utils.WaitHelper;
 import org.apache.commons.io.FileUtils;
@@ -39,8 +41,10 @@ import org.openqa.selenium.WebElement;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class Commands implements CdfHelper {
 
@@ -164,22 +168,33 @@ public class Commands implements CdfHelper {
 
   public static void fillConnectionCreateForm(String connectionType, String connectionId,
                                               String projectId, String serviceAccountPath) {
-    if (projectId == null || projectId.length() == 0) {
-      projectId = Constants.DEFAULT_GCP_PROJECTID;
+    boolean testOnCDF  = Boolean.parseBoolean(PluginPropertyUtils.pluginProp("testOnCDF"));
+
+    if (!testOnCDF) {
+      if (projectId == null || projectId.length() == 0) {
+        projectId = Constants.DEFAULT_GCP_PROJECTID;
+      }
+      if (serviceAccountPath == null || serviceAccountPath.length() == 0) {
+        serviceAccountPath = Constants.DEFAULT_GCP_SERVICEACCOUNT_PATH;
+      }
     }
-    if (serviceAccountPath == null || serviceAccountPath.length() == 0) {
-      serviceAccountPath = Constants.DEFAULT_GCP_SERVICEACCOUNT_PATH;
-    }
+
 
     ElementHelper.clickOnElement(
       Helper.locateElementByTestId("add-connection-button"), 30);
     ElementHelper.clickOnElement(
       Helper.locateElementByTestId("connector-" + connectionType));
     sendKeysToInputElementByTestId("name", connectionId);
-    clearInputAndSendKeysToElementByTestId("project", projectId);
 
-    //Using service account file path
-    clearInputAndSendKeysToElementByTestId("serviceFilePath", serviceAccountPath);
+    // We will be using auto-detect in case the tests are running on CDF.
+    if (!testOnCDF || projectId != null) {
+      clearInputAndSendKeysToElementByTestId("project", projectId);
+
+      if (serviceAccountPath != null) {
+        //Using service account file path
+        clearInputAndSendKeysToElementByTestId("serviceFilePath", serviceAccountPath);
+      }
+    }
   }
 
   public static void dismissStudioLeaveConfirmationModal() {
@@ -328,18 +343,38 @@ public class Commands implements CdfHelper {
   }
 
   public static int uploadPipelineDraftViaApi(String pipelineDraftJson) throws IOException {
+    Map<String, String> reqHeaders = new HashMap<String, String>();
+    boolean testOnCDF  = Boolean.parseBoolean(PluginPropertyUtils.pluginProp("testOnCDF"));
+
+    if (testOnCDF) {
+      String command = "gcloud auth print-access-token";
+      String token = Helper.createCdfAccessToken(command);
+      String accessToken = "Bearer " + token;
+      reqHeaders.put("Authorization", accessToken);
+    }
+
     HttpResponse response = HttpRequestHandler.makeHttpRequest(
-      HttpMethod.PUT, Constants.BASE_SERVER_URL + "/v3/configuration/user", null, pipelineDraftJson, null
+      HttpMethod.PUT, Constants.BASE_SERVER_URL + "/v3/configuration/user", testOnCDF ? reqHeaders : null,
+            pipelineDraftJson, null
     );
     return response.getResponseCode();
   }
 
   public static int checkDraftPipelineExistsViaApi(String draftId) throws IOException {
+    Map<String, String> reqHeaders = new HashMap<String, String>();
+    boolean testOnCDF  = Boolean.parseBoolean(PluginPropertyUtils.pluginProp("testOnCDF"));
+
+    if (testOnCDF) {
+      String command = "gcloud auth print-access-token";
+      String token = Helper.createCdfAccessToken(command);
+      String accessToken = "Bearer " + token;
+      reqHeaders.put("Authorization", accessToken);
+    }
     HttpResponse response = HttpRequestHandler.makeHttpRequest(
       HttpMethod.GET,
       Constants.BASE_SERVER_URL +
         "/v3/namespaces/system/apps/pipeline/services/studio/methods/v1/contexts/default/drafts/"
-        + draftId, null, null, null
+        + draftId, testOnCDF ? reqHeaders : null, null, null
     );
     return response.getResponseCode();
   }

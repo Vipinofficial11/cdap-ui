@@ -20,8 +20,11 @@ import io.cdap.cdap.ui.utils.Constants;
 import io.cdap.cdap.ui.utils.Helper;
 import io.cdap.cdap.ui.utils.HttpRequestHandler;
 import io.cdap.common.http.HttpMethod;
+import io.cdap.e2e.utils.ConstantsUtil;
 import io.cdap.e2e.utils.ElementHelper;
+import io.cdap.e2e.utils.PluginPropertyUtils;
 import io.cdap.e2e.utils.SeleniumDriver;
+import io.cdap.e2e.utils.SeleniumHelper;
 import io.cdap.e2e.utils.WaitHelper;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -29,6 +32,8 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ComputeProfile {
 
@@ -106,14 +111,26 @@ public class ComputeProfile {
   }
 
   @Then("Delete system profile {string} as cleanup action")
-  public void deleteProfile(String profileName) throws IOException {
+  public static void deleteProfile(String profileName) throws IOException {
+    Map<String, String> reqHeaders = new HashMap<String, String>();
+    boolean testOnCDF  = Boolean.parseBoolean(SeleniumHelper.readParameters(ConstantsUtil.TESTONCDF));
+
+    if (testOnCDF) {
+      String command = "gcloud auth print-access-token";
+      String token = Helper.createCdfAccessToken(command);
+      String accessToken = "Bearer " + token;
+
+      reqHeaders.put("Authorization", accessToken);
+      reqHeaders.put("Content-length", "0");
+    }
+
     try {
       HttpRequestHandler.makeHttpRequest(HttpMethod.POST,
                                          Constants.BASE_SERVER_URL + "/v3/profiles/" + profileName + "/disable",
-                                         null, null, null);
+              testOnCDF ? reqHeaders : null, testOnCDF ? "" : null, null);
       HttpRequestHandler.makeHttpRequest(HttpMethod.DELETE,
                                          Constants.BASE_SERVER_URL + "/v3/profiles/" + profileName,
-                                         null, null, null);
+              testOnCDF ? reqHeaders : null, testOnCDF ? "" : null, null);
     } catch (IOException e) {
       throw new IOException(e.getMessage());
     }
@@ -121,15 +138,26 @@ public class ComputeProfile {
 
   @Then("Delete namespace profile {string} as cleanup action")
   public void deleteNsProfile(String profileName) throws IOException {
+      Map<String, String> reqHeaders = new HashMap<String, String>();
+      boolean testOnCDF  = Boolean.parseBoolean(SeleniumHelper.readParameters(ConstantsUtil.TESTONCDF));
+
+      if (testOnCDF) {
+        String command = "gcloud auth print-access-token";
+        String token = Helper.createCdfAccessToken(command);
+        String accessToken = "Bearer " + token;
+
+        reqHeaders.put("Authorization", accessToken);
+        reqHeaders.put("Content-length", "0");
+      }
     try {
       HttpRequestHandler
         .makeHttpRequest(HttpMethod.POST,
                          Constants.BASE_SERVER_URL + "/v3/namespaces/default/profiles/" + profileName + "/disable",
-                         null, null, null);
+                testOnCDF ? reqHeaders : null, testOnCDF ? "" : null, null);
       HttpRequestHandler
         .makeHttpRequest(HttpMethod.DELETE,
                          Constants.BASE_SERVER_URL + "/v3/namespaces/default/profiles/" + profileName,
-                         null, null, null);
+                testOnCDF ? reqHeaders : null, testOnCDF ? "" : null, null);
     } catch (IOException e) {
       throw new IOException(e.getMessage());
     }
